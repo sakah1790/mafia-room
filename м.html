@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>МАФИЯ · ОБЩАЯ КОМНАТА</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background: #0a0f1f;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: #16213e;
+            border-radius: 50px;
+            padding: 32px;
+            border: 3px solid gold;
+        }
+        
+        /* Вход */
+        .join-screen {
+            text-align: center;
+        }
+        
+        .join-screen h1 {
+            color: gold;
+            font-size: 4rem;
+            margin-bottom: 40px;
+        }
+        
+        .join-screen input {
+            width: 100%;
+            padding: 18px;
+            background: #1a1f35;
+            border: 2px solid gold;
+            border-radius: 40px;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .join-screen button {
+            width: 100%;
+            padding: 18px;
+            background: gold;
+            border: none;
+            border-radius: 40px;
+            color: black;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Комната */
+        .room-screen {
+            animation: fade 0.3s;
+        }
+        
+        @keyframes fade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1a1f35;
+            padding: 15px 20px;
+            border-radius: 40px;
+            margin-bottom: 25px;
+        }
+        
+        .header h2 {
+            color: gold;
+        }
+        
+        .room-code {
+            background: gold;
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: black;
+            font-weight: bold;
+        }
+        
+        .players-container {
+            min-height: 200px;
+            margin: 20px 0;
+        }
+        
+        .player-item {
+            background: #1a1f35;
+            border-radius: 40px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 2px solid transparent;
+        }
+        
+        .player-item.admin {
+            border-color: gold;
+        }
+        
+        .player-item.you {
+            border-color: #4caf50;
+        }
+        
+        .player-number {
+            width: 45px;
+            height: 45px;
+            background: gold;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-weight: bold;
+        }
+        
+        .player-name {
+            flex: 1;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .player-tag {
+            padding: 4px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+        }
+        
+        .tag-admin {
+            background: gold;
+            color: black;
+        }
+        
+        .tag-you {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .info-text {
+            text-align: center;
+            color: white;
+            margin: 10px 0;
+        }
+        
+        .share-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #1a1f35;
+            border-radius: 30px;
+            text-align: center;
+            border: 2px dashed gold;
+        }
+        
+        .share-section p {
+            color: gold;
+            margin-bottom: 10px;
+        }
+        
+        .share-link {
+            color: white;
+            word-break: break-all;
+            background: #0a0f1f;
+            padding: 15px;
+            border-radius: 25px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Вход -->
+        <div id="joinDiv" class="join-screen">
+            <h1>МАФИЯ</h1>
+            <input type="text" id="nameField" placeholder="Твой ник" value="Игрок">
+            <button onclick="joinGame()">🚪 Войти</button>
+        </div>
+
+        <!-- Комната -->
+        <div id="roomDiv" class="room-screen hidden">
+            <div class="header">
+                <h2>КТО В КОМНАТЕ</h2>
+                <div class="room-code" id="roomCode">MAFIA</div>
+            </div>
+            
+            <div class="players-container" id="playersDiv"></div>
+            
+            <div class="info-text" id="countDisplay">👥 Сейчас: 0</div>
+            <div class="info-text" id="roleDisplay"></div>
+            
+            <div class="share-section">
+                <p>📱 Отправь эту ссылку друзьям:</p>
+                <div class="share-link" id="linkDisplay">https://твой-сайт.ru</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== РАБОТАЕТ НА РАЗНЫХ УСТРОЙСТВАХ ==========
+        
+        // Уникальный ID для этого браузера
+        const MY_ID = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+        
+        // Глобальный список игроков
+        let globalPlayers = [];
+        
+        // Загрузить из localStorage
+        function loadPlayers() {
+            let saved = localStorage.getItem('mafia_global_room');
+            if (saved) {
+                try {
+                    globalPlayers = JSON.parse(saved);
+                } catch(e) {
+                    globalPlayers = [];
+                }
+            }
+        }
+        
+        // Сохранить в localStorage
+        function savePlayers() {
+            localStorage.setItem('mafia_global_room', JSON.stringify(globalPlayers));
+        }
+        
+        // Обновить отображение
+        function updateDisplay() {
+            let container = document.getElementById('playersDiv');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            // Сортируем: админ первый, остальные по времени
+            let sorted = [...globalPlayers].sort((a, b) => {
+                if (a.isAdmin && !b.isAdmin) return -1;
+                if (!a.isAdmin && b.isAdmin) return 1;
+                return (a.joinTime || 0) - (b.joinTime || 0);
+            });
+            
+            sorted.forEach((player, index) => {
+                let div = document.createElement('div');
+                div.className = `player-item ${player.isAdmin ? 'admin' : ''} ${player.id === MY_ID ? 'you' : ''}`;
+                
+                let tag = '';
+                if (player.isAdmin) {
+                    tag = '<span class="player-tag tag-admin">👑 Админ</span>';
+                } else if (player.id === MY_ID) {
+                    tag = '<span class="player-tag tag-you">⭐ Вы</span>';
+                }
+                
+                div.innerHTML = `
+                    <div class="player-number">${index + 1}</div>
+                    <div class="player-name">${player.name}</div>
+                    ${tag}
+                `;
+                
+                container.appendChild(div);
+            });
+            
+            document.getElementById('countDisplay').innerHTML = `👥 Сейчас в комнате: ${globalPlayers.length}`;
+            
+            let me = globalPlayers.find(p => p.id === MY_ID);
+            if (me?.isAdmin) {
+                document.getElementById('roleDisplay').innerHTML = '👑 Ты админ';
+            } else {
+                document.getElementById('roleDisplay').innerHTML = '⭐ Ты игрок';
+            }
+        }
+        
+        // Войти в игру
+        window.joinGame = function() {
+            let name = document.getElementById('nameField').value.trim() || 'Игрок';
+            
+            loadPlayers();
+            
+            // Удаляем игроков, которые не обновлялись 10 секунд
+            let tenSecondsAgo = Date.now() - 10000;
+            globalPlayers = globalPlayers.filter(p => (p.lastSeen || 0) > tenSecondsAgo);
+            
+            // Проверяем, есть ли я уже
+            let iExist = globalPlayers.find(p => p.id === MY_ID);
+            
+            if (!iExist) {
+                // Я первый? Тогда я админ
+                let amAdmin = globalPlayers.length === 0;
+                
+                globalPlayers.push({
+                    id: MY_ID,
+                    name: name,
+                    isAdmin: amAdmin,
+                    joinTime: Date.now(),
+                    lastSeen: Date.now()
+                });
+            } else {
+                // Обновляю время
+                iExist.lastSeen = Date.now();
+            }
+            
+            savePlayers();
+            
+            document.getElementById('joinDiv').classList.add('hidden');
+            document.getElementById('roomDiv').classList.remove('hidden');
+            
+            // Показываем ссылку
+            let currentUrl = window.location.href;
+            if (currentUrl.startsWith('file://')) {
+                currentUrl = '📱 Отправь этот файл друзьям в Telegram';
+            }
+            document.getElementById('linkDisplay').innerText = currentUrl;
+            
+            updateDisplay();
+        };
+        
+        // Каждую секунду проверяем изменения
+        setInterval(() => {
+            if (!document.getElementById('roomDiv').classList.contains('hidden')) {
+                let saved = localStorage.getItem('mafia_global_room');
+                if (saved) {
+                    let freshPlayers = JSON.parse(saved);
+                    
+                    // Удаляем старых
+                    let tenSecondsAgo = Date.now() - 10000;
+                    freshPlayers = freshPlayers.filter(p => (p.lastSeen || 0) > tenSecondsAgo);
+                    
+                    // Обновляем свое время
+                    let me = freshPlayers.find(p => p.id === MY_ID);
+                    if (me) {
+                        me.lastSeen = Date.now();
+                    }
+                    
+                    // Если список изменился
+                    if (JSON.stringify(freshPlayers) !== JSON.stringify(globalPlayers)) {
+                        globalPlayers = freshPlayers;
+                        savePlayers();
+                        updateDisplay();
+                    }
+                }
+            }
+        }, 1000);
+        
+        // При загрузке
+        loadPlayers();
+        if (globalPlayers.find(p => p.id === MY_ID)) {
+            document.getElementById('joinDiv').classList.add('hidden');
+            document.getElementById('roomDiv').classList.remove('hidden');
+            updateDisplay();
+        }
+    </script>
+</body>
+</html>
