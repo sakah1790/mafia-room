@@ -1,369 +1,439 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>МАФИЯ · ОБЩАЯ КОМНАТА</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Наталья Александровна Городницкая | Биография</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: system-ui, -apple-system, sans-serif;
         }
-        
+
         body {
-            background: #0a0f1f;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
+            font-family: 'Segoe UI', 'Roboto', 'Georgia', serif;
+            background: #faf7f2;
+            color: #2c3e2f;
+            line-height: 1.5;
         }
-        
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background: #16213e;
-            border-radius: 50px;
-            padding: 32px;
-            border: 3px solid gold;
-        }
-        
-        /* Вход */
-        .join-screen {
-            text-align: center;
-        }
-        
-        .join-screen h1 {
-            color: gold;
-            font-size: 4rem;
-            margin-bottom: 40px;
-        }
-        
-        .join-screen input {
-            width: 100%;
-            padding: 18px;
-            background: #1a1f35;
-            border: 2px solid gold;
-            border-radius: 40px;
+
+        header {
+            background: linear-gradient(135deg, #2c5e3a 0%, #1e3a2f 100%);
             color: white;
-            font-size: 1.2rem;
-            text-align: center;
-            margin-bottom: 20px;
+            padding: 1rem 1rem 0.8rem 1rem;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        
-        .join-screen button {
-            width: 100%;
-            padding: 18px;
-            background: gold;
-            border: none;
-            border-radius: 40px;
-            color: black;
-            font-size: 1.3rem;
-            font-weight: bold;
-            cursor: pointer;
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
         }
-        
-        /* Комната */
-        .room-screen {
-            animation: fade 0.3s;
-        }
-        
-        @keyframes fade {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .header {
+
+        .header-flex {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #1a1f35;
-            padding: 15px 20px;
-            border-radius: 40px;
-            margin-bottom: 25px;
-        }
-        
-        .header h2 {
-            color: gold;
-        }
-        
-        .room-code {
-            background: gold;
-            padding: 8px 20px;
-            border-radius: 40px;
-            color: black;
-            font-weight: bold;
-        }
-        
-        .players-container {
-            min-height: 200px;
-            margin: 20px 0;
-        }
-        
-        .player-item {
-            background: #1a1f35;
-            border-radius: 40px;
-            padding: 16px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
+            flex-wrap: wrap;
             gap: 15px;
-            border: 2px solid transparent;
         }
-        
-        .player-item.admin {
-            border-color: gold;
+
+        .logo h1 {
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+            font-weight: 600;
         }
-        
-        .player-item.you {
-            border-color: #4caf50;
+
+        .logo p {
+            font-size: 0.75rem;
+            opacity: 0.85;
+            font-style: italic;
         }
-        
-        .player-number {
-            width: 45px;
-            height: 45px;
-            background: gold;
+
+        /* Аватарка */
+        .avatar-photo {
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
+            object-fit: cover;
+            object-position: center 30%;
+            border: 3px solid #f4b942;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            background: #d9c48b;
+        }
+
+        nav {
+            margin-top: 1rem;
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 0.8rem;
             justify-content: center;
-            color: black;
-            font-weight: bold;
         }
-        
-        .player-name {
-            flex: 1;
+
+        .nav-btn {
+            background: none;
+            border: none;
             color: white;
-            font-weight: bold;
+            font-size: 0.85rem;
+            padding: 0.35rem 0.9rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+            background: rgba(255,255,255,0.1);
         }
-        
-        .player-tag {
-            padding: 4px 15px;
+
+        .nav-btn:hover, .nav-btn.active {
+            background: #f4b942;
+            color: #1e3a2f;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+            padding: 1.5rem 0 2rem;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            padding: 1.3rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e9e2d4;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c5e3a;
+            border-left: 6px solid #f4b942;
+            padding-left: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+        }
+
+        @media (min-width: 700px) {
+            .grid-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .logo h1 { font-size: 1.8rem; }
+            .logo p { font-size: 0.9rem; }
+            .avatar-photo { width: 80px; height: 80px; }
+            .nav-btn { font-size: 1rem; padding: 0.4rem 1.2rem; }
+            .card { padding: 1.8rem; }
+            .section-title { font-size: 1.8rem; }
+            .container { padding: 0 1.5rem; }
+        }
+
+        .info-tag {
+            background: #f0f4e8;
+            padding: 0.2rem 0.8rem;
             border-radius: 30px;
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #2c5e3a;
+        }
+
+        .achievement-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .achievement-list li {
+            margin-bottom: 0.7rem;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        .achievement-list li::before {
+            content: "🏅";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .review {
+            background: #fef9ef;
+            border-radius: 1.5rem;
+            padding: 1rem;
+            margin-top: 0.8rem;
+            border-left: 4px solid #f4b942;
+        }
+        .review h4 {
+            color: #b1622c;
+            margin-bottom: 0.4rem;
+            font-size: 1rem;
+        }
+        .review p {
             font-size: 0.9rem;
         }
-        
-        .tag-admin {
-            background: gold;
-            color: black;
+
+        .timeline-item {
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed #ddd8cc;
+            padding-bottom: 0.6rem;
+            font-size: 0.95rem;
         }
-        
-        .tag-you {
-            background: #4caf50;
-            color: white;
+        .year {
+            font-weight: 700;
+            background: #2c5e3a10;
+            display: inline-block;
+            padding: 0.15rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 0.8rem;
+            color: #2c5e3a;
         }
-        
-        .info-text {
+
+        /* Улучшенные рамки для фотографий — лицо видно отлично */
+        .photo-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            border: 1px solid #e9e2d4;
+            margin-bottom: 1.5rem;
+        }
+        .photo-card:hover {
+            transform: scale(1.01);
+        }
+        .photo-card img {
+            width: 100%;
+            height: auto;
+            max-height: 450px;
+            object-fit: contain;
+            background: #f3efe7;
+            display: block;
+        }
+        .photo-caption {
+            padding: 0.8rem;
+            background: #fef7e8;
+            font-weight: 500;
+            color: #5a4a32;
             text-align: center;
-            color: white;
-            margin: 10px 0;
+            font-size: 0.9rem;
+            border-top: 1px solid #ede6d8;
         }
-        
-        .share-section {
-            margin-top: 30px;
-            padding: 20px;
-            background: #1a1f35;
-            border-radius: 30px;
+
+        @media (max-width: 480px) {
+            .photo-card img {
+                max-height: 320px;
+            }
+            .card p, .timeline-item, .achievement-list li {
+                font-size: 0.9rem;
+            }
+        }
+
+        footer {
+            background: #e2dcd0;
             text-align: center;
-            border: 2px dashed gold;
-        }
-        
-        .share-section p {
-            color: gold;
-            margin-bottom: 10px;
-        }
-        
-        .share-link {
-            color: white;
-            word-break: break-all;
-            background: #0a0f1f;
-            padding: 15px;
-            border-radius: 25px;
-        }
-        
-        .hidden {
-            display: none;
+            padding: 1.2rem;
+            font-size: 0.75rem;
+            color: #4a5b44;
+            margin-top: 1rem;
         }
     </style>
 </head>
 <body>
+<header>
     <div class="container">
-        <!-- Вход -->
-        <div id="joinDiv" class="join-screen">
-            <h1>МАФИЯ</h1>
-            <input type="text" id="nameField" placeholder="Твой ник" value="Игрок">
-            <button onclick="joinGame()">🚪 Войти</button>
+        <div class="header-flex">
+            <div class="logo">
+                <h1>Наталья Александровна Городницкая</h1>
+                <p>преподаватель химии и биологии · Юридический колледж БГУ</p>
+            </div>
+            <img src="avatar.jpg" alt="Наталья Александровна" class="avatar-photo" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2245%22%20fill%3D%22%23d9c48b%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2267%22%20text-anchor%3D%22middle%22%20fill%3D%22%235a4a2e%22%20font-size%3D%2230%22%3E📷%3C%2Ftext%3E%3C%2Fsvg%3E';">
+        </div>
+        <nav>
+            <button class="nav-btn active" data-page="bio">📖 Биография</button>
+            <button class="nav-btn" data-page="career">🏫 Преподавание & Науки</button>
+            <button class="nav-btn" data-page="family">❤️ Семья & Личное</button>
+            <button class="nav-btn" data-page="sport">🏆 Спорт · Школа · Увлечения</button>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <!-- СТРАНИЦА 1: БИОГРАФИЯ -->
+    <div id="bio" class="page active-page">
+        <div class="card">
+            <h2 class="section-title">Профессиональный и жизненный путь</h2>
+            <p><strong>Городницкая Наталья Александровна</strong> — преподаватель химии и биологии в Юридическом колледже Белорусского государственного университета. Родилась в <strong>1973 году в Минске</strong>. Окончила биологический факультет БГУ по специальности «биолог, преподаватель биологии и химии».</p>
+            <p style="margin-top: 12px;">✨ Легко и весело училась в БГУ. Проходила практику на биостанции «Нарочь», занималась рекреационной деятельностью — дипломная работа была связана с пляжами озера Нарочь. В студенчестве полюбила биологию, химия была «попутной» дисциплиной, что позже определило её педагогический стиль.</p>
+            <p><strong>🎓 Дополнительное образование:</strong> закончила Международный государственный экологический институт имени А. Д. Сахарова по специальности «эколог-эксперт, медицинская экология».</p>
+            <p><strong>🏫 Школьные годы:</strong> училась в <strong>Средней школе №51</strong>. Успеваемость «хорошо и отлично», училось легко, почти без труда. Любимый предмет — физкультура, активно участвовала в спортивной жизни.</p>
         </div>
 
-        <!-- Комната -->
-        <div id="roomDiv" class="room-screen hidden">
-            <div class="header">
-                <h2>КТО В КОМНАТЕ</h2>
-                <div class="room-code" id="roomCode">MAFIA</div>
+        <!-- Фото "Поза" -->
+        <div class="photo-card">
+            <img src="poza.jpg" alt="Наталья Александровна" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20600%20400%22%3E%3Crect%20width%3D%22600%22%20height%3D%22400%22%20fill%3D%22%23e9e2d4%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20fill%3D%22%238a7b64%22%3E📷 Поза%3C%2Ftext%3E%3C%2Fsvg%3E';">
+            <div class="photo-caption">🌸 Наталья Александровна — эстетичный и вдохновляющий педагог</div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3 class="section-title" style="font-size:1.3rem;">🌿 Детство & яркие воспоминания</h3>
+                <p>Прекрасное детство: часто ездила к бабушке в <strong>Пружаны</strong>. Дважды была в лагере: в <strong>Крыму</strong> и <strong>Астрахани</strong>. Лучшие воспоминания — дружба, приключения, южные берега. Школьная жизнь была наполнена легкостью и тягой к знаниям, особенно к естественным наукам.</p>
+                <p>🎶 Окончила музыкальную школу по классу фортепиано. Хобби — танцевать, что осталось с ней на всю жизнь.</p>
             </div>
-            
-            <div class="players-container" id="playersDiv"></div>
-            
-            <div class="info-text" id="countDisplay">👥 Сейчас: 0</div>
-            <div class="info-text" id="roleDisplay"></div>
-            
-            <div class="share-section">
-                <p>📱 Отправь эту ссылку друзьям:</p>
-                <div class="share-link" id="linkDisplay">https://твой-сайт.ru</div>
+            <div class="card">
+                <h3 class="section-title" style="font-size:1.3rem;">⚡ Профессиональное призвание</h3>
+                <p><strong>1 марта 2006 года</strong> пришла работать в Юридический колледж БГУ — пригласили знакомые биологи. Несмотря на нюансы, сразу увидела себя в профессии преподавателя. Работа нравится до сих пор. «Биология — моя страсть, а химия идёт с ней рука об руку». По статистике <strong>9 из 10 учащихся колледжа</strong> называют Наталью Александровну своим любимым преподавателем.</p>
+                <p><span class="info-tag">❤️ Из отзывов:</span> «Невероятные человеческие качества — юмор, справедливость, открытость, добродушие, эстетичность и собранность».</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="section-title">🎓 Награды & Признание</h3>
+            <ul class="achievement-list">
+                <li>Благодарность директора Юридического колледжа БГУ, октябрь 2010</li>
+                <li>Благодарственное письмо ректора БГУ, 2011</li>
+                <li>Грамота директора Юридического колледжа БГУ, октябрь 2015</li>
+                <li>Благодарность Белорусского государственного университета, октябрь 2018</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- СТРАНИЦА 2: ПРЕПОДАВАНИЕ -->
+    <div id="career" class="page">
+        <div class="card">
+            <h2 class="section-title">📚 Научно-педагогическая деятельность</h2>
+            <p>Наталья Александровна активно занимается учебной и воспитательной работой, внедряет интерактивные методы. Регулярно участвует в республиканских и международных конференциях.</p>
+        </div>
+
+        <div class="card">
+            <h3 class="section-title">📖 Публикации и конференции</h3>
+            <ul style="margin-left: 1.2rem; line-height: 1.5;">
+                <li><strong>Международная конференция (2006)</strong> — «Ток-шоу как метод самостоятельной работы студентов».</li>
+                <li><strong>Республиканская конференция (2008)</strong> — «Биология в юриспруденции».</li>
+                <li><strong>Республиканская конференция (2011)</strong> — «ДНК в судебно-геномной экспертизе».</li>
+                <li><strong>VIII конференция «Успешен тот, кто творит» (Брест, 2015)</strong> — «Изучение особенностей отпечатков пальцев человека».</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3 class="section-title">⭐ Отзывы учащихся</h3>
+            <div class="review">
+                <h4>Арина К.</h4>
+                <p>«Наталья Александровна — мой любимый преподаватель. В ней собраны множество важнейших профессиональных качеств: ответственность, собранность. Позволила понимать химию и биологию намного лучше, чем в школе. Также отмечу человеческие качества — юмор, справедливость, честность, открытость, добродушие. А ещё Наталья Александровна очень эстетичный человек — пример с неё должен брать каждый!»</p>
+            </div>
+            <div class="review">
+                <h4>Виктория Ж.</h4>
+                <p>«Добрая, отзывчивая, всегда поддержит. Её уроки — это маленькие открытия. Настоящий педагог с большой буквы, спасибо за интерес к биологии!»</p>
+            </div>
+            <div class="review">
+                <h4>Статистика колледжа</h4>
+                <p>9 из 10 студентов называют Наталью Александровну любимым преподавателем.</p>
             </div>
         </div>
     </div>
 
-    <script>
-        // ========== РАБОТАЕТ НА РАЗНЫХ УСТРОЙСТВАХ ==========
+    <!-- СТРАНИЦА 3: СЕМЬЯ -->
+    <div id="family" class="page">
+        <div class="card">
+            <h2 class="section-title">👨‍👩‍👧 Семейная история</h2>
+            <div class="timeline-item"><span class="year">1997 год</span> Наталья Александровна вышла замуж. Познакомились с будущим супругом на одном факультете БГУ — они были одногруппниками.</div>
+            <div class="timeline-item"><span class="year">Муж</span> <strong>Сергей Алексеевич</strong> — надёжный спутник жизни, поддерживает во всех начинаниях.</div>
+            <div class="timeline-item"><span class="year">20 марта 2000 года</span> родилась дочь <strong>Александра</strong>. В 2021 году дочь вышла замуж.</div>
+            <div class="timeline-item"><span class="year">Родители и династия</span> Папа — биолог, мама — историк. Дедушка по маминой линии, бабушка по папиной линии, а также тётя — врачи. В семье ценят образование и науку.</div>
+            <div class="timeline-item"><span class="year">Цитата</span> «Несмотря на множество разных нюансов, работа преподавателя приносит радость. Я увидела себя в этой профессии и благодарна судьбе, что в 2006 году меня пригласили в колледж».</div>
+        </div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🏡 Родительская семья</h3>
+                <p>Папа — биолог, возможно, именно от него передалась любовь к естественным наукам. Мама — историк. Домашняя атмосфера способствовала разностороннему развитию.</p>
+            </div>
+            <div class="card">
+                <h3>✨ Легко и весело в БГУ</h3>
+                <p>Этот настрой Наталья Александровна передаёт студентам, делая лекции живыми и запоминающимися.</p>
+            </div>
+        </div>
+        <!-- Фото "Парус" на странице семьи -->
+        <div class="photo-card">
+            <img src="parus.jpg" alt="Парус" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20600%20400%22%3E%3Crect%20width%3D%22600%22%20height%3D%22400%22%20fill%3D%22%2380b6c1%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%3E⛵ Парус%3C%2Ftext%3E%3C%2Fsvg%3E';">
+            <div class="photo-caption">⛵ Вдохновение, путешествия и семейное счастье</div>
+        </div>
+    </div>
+
+    <!-- СТРАНИЦА 4: СПОРТ, ШКОЛА, УВЛЕЧЕНИЯ -->
+    <div id="sport" class="page">
+        <div class="card">
+            <h2 class="section-title">🏃‍♀️ Спортивная юность & активный отдых</h2>
+            <p><strong>Средняя школа №51</strong> стала местом, где Наталья проявила себя не только в учёбе, но и в спорте. Любимый предмет — <strong>физкультура</strong>! Ездила на различные соревнования по <strong>прыжкам и метанию</strong>. Также бегала спринт и марафон — выносливость и скорость были её сильными сторонами.</p>
+            <p>🏐 Активно играла в волейбол, ходила в секцию по волейболу при школе. Командный дух и любовь к движению остались на всю жизнь.</p>
+        </div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🎹 Музыкальное развитие</h3>
+                <p>Закончила музыкальную школу по классу фортепиано. Игра на фортепиано дисциплинировала, развивала чувство ритма и гармонию.</p>
+                <p>💃 <strong>Хобби — танцевать</strong>. Танцы остаются любимым способом отдохнуть и поднять настроение.</p>
+            </div>
+            <div class="card">
+                <h3>🏅 Лагеря & путешествия</h3>
+                <p>Дважды была в лагере — незабываемый отдых в <strong>Крыму</strong> и <strong>Астрахани</strong>. Эти поездки стали лучшими воспоминаниями детства.</p>
+                <p>⛱️ Рекреационная деятельность на пляжах озера Нарочь — дипломная работа была посвящена этой теме.</p>
+            </div>
+        </div>
+        <div class="card">
+            <h3 class="section-title">🏁 Легкая атлетика и достижения</h3>
+            <p>Школьные соревнования по бегу (спринт, марафон), прыжкам в длину и метанию — закалили характер. Постоянные тренировки в секции волейбола помогли развить реакцию, что пригодилось в педагогической деятельности.</p>
+            <p>✨ «Спорт научил меня не бояться трудностей, а музыка — чувствовать красоту», — делится Наталья Александровна.</p>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>© Биография Натальи Александровны Городницкой | Преподаватель Юридического колледжа БГУ | 1973 — настоящее время</p>
+    <p style="margin-top: 8px;">Любимый преподаватель 9 из 10 студентов · Жизнь, наполненная наукой, спортом и музыкой</p>
+</footer>
+
+<script>
+    const pages = document.querySelectorAll('.page');
+    const btns = document.querySelectorAll('.nav-btn');
+
+    function switchPage(pageId) {
+        pages.forEach(page => page.classList.remove('active-page'));
+        const activePage = document.getElementById(pageId);
+        if(activePage) activePage.classList.add('active-page');
         
-        // Уникальный ID для этого браузера
-        const MY_ID = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
-        
-        // Глобальный список игроков
-        let globalPlayers = [];
-        
-        // Загрузить из localStorage
-        function loadPlayers() {
-            let saved = localStorage.getItem('mafia_global_room');
-            if (saved) {
-                try {
-                    globalPlayers = JSON.parse(saved);
-                } catch(e) {
-                    globalPlayers = [];
-                }
+        btns.forEach(btn => {
+            btn.classList.remove('active');
+            if(btn.getAttribute('data-page') === pageId) {
+                btn.classList.add('active');
             }
-        }
-        
-        // Сохранить в localStorage
-        function savePlayers() {
-            localStorage.setItem('mafia_global_room', JSON.stringify(globalPlayers));
-        }
-        
-        // Обновить отображение
-        function updateDisplay() {
-            let container = document.getElementById('playersDiv');
-            if (!container) return;
-            
-            container.innerHTML = '';
-            
-            // Сортируем: админ первый, остальные по времени
-            let sorted = [...globalPlayers].sort((a, b) => {
-                if (a.isAdmin && !b.isAdmin) return -1;
-                if (!a.isAdmin && b.isAdmin) return 1;
-                return (a.joinTime || 0) - (b.joinTime || 0);
-            });
-            
-            sorted.forEach((player, index) => {
-                let div = document.createElement('div');
-                div.className = `player-item ${player.isAdmin ? 'admin' : ''} ${player.id === MY_ID ? 'you' : ''}`;
-                
-                let tag = '';
-                if (player.isAdmin) {
-                    tag = '<span class="player-tag tag-admin">👑 Админ</span>';
-                } else if (player.id === MY_ID) {
-                    tag = '<span class="player-tag tag-you">⭐ Вы</span>';
-                }
-                
-                div.innerHTML = `
-                    <div class="player-number">${index + 1}</div>
-                    <div class="player-name">${player.name}</div>
-                    ${tag}
-                `;
-                
-                container.appendChild(div);
-            });
-            
-            document.getElementById('countDisplay').innerHTML = `👥 Сейчас в комнате: ${globalPlayers.length}`;
-            
-            let me = globalPlayers.find(p => p.id === MY_ID);
-            if (me?.isAdmin) {
-                document.getElementById('roleDisplay').innerHTML = '👑 Ты админ';
-            } else {
-                document.getElementById('roleDisplay').innerHTML = '⭐ Ты игрок';
-            }
-        }
-        
-        // Войти в игру
-        window.joinGame = function() {
-            let name = document.getElementById('nameField').value.trim() || 'Игрок';
-            
-            loadPlayers();
-            
-            // Удаляем игроков, которые не обновлялись 10 секунд
-            let tenSecondsAgo = Date.now() - 10000;
-            globalPlayers = globalPlayers.filter(p => (p.lastSeen || 0) > tenSecondsAgo);
-            
-            // Проверяем, есть ли я уже
-            let iExist = globalPlayers.find(p => p.id === MY_ID);
-            
-            if (!iExist) {
-                // Я первый? Тогда я админ
-                let amAdmin = globalPlayers.length === 0;
-                
-                globalPlayers.push({
-                    id: MY_ID,
-                    name: name,
-                    isAdmin: amAdmin,
-                    joinTime: Date.now(),
-                    lastSeen: Date.now()
-                });
-            } else {
-                // Обновляю время
-                iExist.lastSeen = Date.now();
-            }
-            
-            savePlayers();
-            
-            document.getElementById('joinDiv').classList.add('hidden');
-            document.getElementById('roomDiv').classList.remove('hidden');
-            
-            // Показываем ссылку
-            let currentUrl = window.location.href;
-            if (currentUrl.startsWith('file://')) {
-                currentUrl = '📱 Отправь этот файл друзьям в Telegram';
-            }
-            document.getElementById('linkDisplay').innerText = currentUrl;
-            
-            updateDisplay();
-        };
-        
-        // Каждую секунду проверяем изменения
-        setInterval(() => {
-            if (!document.getElementById('roomDiv').classList.contains('hidden')) {
-                let saved = localStorage.getItem('mafia_global_room');
-                if (saved) {
-                    let freshPlayers = JSON.parse(saved);
-                    
-                    // Удаляем старых
-                    let tenSecondsAgo = Date.now() - 10000;
-                    freshPlayers = freshPlayers.filter(p => (p.lastSeen || 0) > tenSecondsAgo);
-                    
-                    // Обновляем свое время
-                    let me = freshPlayers.find(p => p.id === MY_ID);
-                    if (me) {
-                        me.lastSeen = Date.now();
-                    }
-                    
-                    // Если список изменился
-                    if (JSON.stringify(freshPlayers) !== JSON.stringify(globalPlayers)) {
-                        globalPlayers = freshPlayers;
-                        savePlayers();
-                        updateDisplay();
-                    }
-                }
-            }
-        }, 1000);
-        
-        // При загрузке
-        loadPlayers();
-        if (globalPlayers.find(p => p.id === MY_ID)) {
-            document.getElementById('joinDiv').classList.add('hidden');
-            document.getElementById('roomDiv').classList.remove('hidden');
-            updateDisplay();
-        }
-    </script>
+        });
+    }
+
+    btns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const pageId = btn.getAttribute('data-page');
+            if(pageId) switchPage(pageId);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+</script>
 </body>
 </html>
